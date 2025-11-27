@@ -26,10 +26,7 @@ const App: React.FC = () => {
   const [poses, setPoses] = useState<PoseSuggestion[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [environmentDesc, setEnvironmentDesc] = useState<string>('');
-  
-  // Use ID for selection to ensure we always get the latest state (checked props)
-  const [selectedPoseId, setSelectedPoseId] = useState<string | null>(null);
-  const selectedPose = poses.find(p => p.id === selectedPoseId) || null;
+  const [selectedPose, setSelectedPose] = useState<PoseSuggestion | null>(null);
   
   // Settings State
   const [showSettings, setShowSettings] = useState(false);
@@ -63,14 +60,12 @@ const App: React.FC = () => {
       const modelDesc = data.modelDescription || modelInput;
       setEnvironmentDesc(envDesc);
 
-      // Initialize poses with loading state for images and map props
+      // Initialize poses with loading state for images
       const initialPoses: PoseSuggestion[] = data.poses.map(p => ({
         ...p,
         id: generateId(),
         isImageLoading: true,
-        imageError: false,
-        // Convert API string array to interactive object array
-        props: (p.props || []).map(propName => ({ name: propName, checked: false }))
+        imageError: false
       }));
 
       setPoses(initialPoses);
@@ -129,23 +124,9 @@ const App: React.FC = () => {
 
     // Re-trigger generation
     const contextToUse = environmentDesc || contextInput;
+    // We assume model desc is implicitly handled by the prompt construction if not stored separately in pose,
+    // but ideally we should store modelDesc in state too. For now we use input.
     generateImageForPose(id, pose.description, productInput, contextToUse, modelInput);
-  };
-
-  const handleToggleProp = (poseId: string, propIndex: number) => {
-    setPoses(currentPoses => 
-      currentPoses.map(p => {
-        if (p.id !== poseId) return p;
-        // Create a copy of the props array
-        const newProps = [...p.props];
-        // Toggle the checked state
-        newProps[propIndex] = { 
-          ...newProps[propIndex], 
-          checked: !newProps[propIndex].checked 
-        };
-        return { ...p, props: newProps };
-      })
-    );
   };
 
   const handleStyleSelect = (style: string) => {
@@ -334,7 +315,7 @@ const App: React.FC = () => {
                   key={pose.id} 
                   pose={pose} 
                   onRetry={handleRetryImage}
-                  onClick={(p) => setSelectedPoseId(p.id)}
+                  onClick={setSelectedPose}
                 />
               ))}
             </div>
@@ -346,9 +327,8 @@ const App: React.FC = () => {
       {selectedPose && (
         <PoseDetailModal 
           pose={selectedPose} 
-          onClose={() => setSelectedPoseId(null)} 
+          onClose={() => setSelectedPose(null)} 
           onRetry={handleRetryImage}
-          onToggleProp={handleToggleProp}
         />
       )}
       

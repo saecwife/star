@@ -5,10 +5,9 @@ interface PoseDetailModalProps {
   pose: PoseSuggestion;
   onClose: () => void;
   onRetry: (id: string) => void;
-  onToggleProp?: (id: string, index: number) => void;
 }
 
-export const PoseDetailModal: React.FC<PoseDetailModalProps> = ({ pose, onClose, onRetry, onToggleProp }) => {
+export const PoseDetailModal: React.FC<PoseDetailModalProps> = ({ pose, onClose, onRetry }) => {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -80,51 +79,19 @@ export const PoseDetailModal: React.FC<PoseDetailModalProps> = ({ pose, onClose,
 
             <h2 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">{pose.title}</h2>
             
-            <div className="prose prose-sm prose-gray mb-6">
+            <div className="prose prose-sm prose-gray">
               <p className="text-base text-gray-600 leading-relaxed whitespace-pre-line">
                 {pose.description}
               </p>
             </div>
-
-            {/* Props Checklist Section */}
-            {pose.props && pose.props.length > 0 && (
-               <div className="mb-6">
-                 <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1">
-                   <span className="material-symbols-outlined text-sm">fact_check</span>
-                   拍攝準備清單 (服裝/道具/器材)
-                 </h4>
-                 <div className="space-y-2">
-                   {pose.props.map((prop, idx) => (
-                     <label 
-                      key={idx} 
-                      className={`flex items-start gap-3 p-2.5 rounded-lg border transition-all cursor-pointer select-none
-                        ${prop.checked 
-                          ? 'bg-gray-50 border-gray-200' 
-                          : 'bg-white border-gray-200 hover:border-gray-300'}`}
-                     >
-                       <input 
-                        type="checkbox" 
-                        checked={prop.checked}
-                        onChange={() => onToggleProp && onToggleProp(pose.id, idx)}
-                        className="mt-1 w-4 h-4 text-gray-900 bg-gray-100 border-gray-300 rounded focus:ring-gray-900 focus:ring-2 accent-gray-900"
-                       />
-                       <span className={`text-sm ${prop.checked ? 'text-gray-400 line-through' : 'text-gray-700'}`}>
-                         {prop.name}
-                       </span>
-                     </label>
-                   ))}
-                 </div>
-               </div>
-            )}
             
-            {/* Tips Section */}
             {pose.tips && pose.tips.length > 0 && (
-               <div className="mt-2 p-4 bg-yellow-50/50 rounded-lg border border-yellow-100/50">
-                 <h4 className="text-xs font-bold text-yellow-600/70 uppercase tracking-wider mb-2">執行重點 Tips</h4>
+               <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                 <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">執行重點 Tips</h4>
                  <ul className="space-y-1.5">
                    {pose.tips.map((tip, idx) => (
-                     <li key={idx} className="text-sm text-gray-600 flex items-start">
-                       <span className="text-yellow-400 mr-2">•</span> {tip}
+                     <li key={idx} className="text-sm text-gray-700 flex items-start">
+                       <span className="text-gray-400 mr-2">•</span> {tip}
                      </li>
                    ))}
                  </ul>

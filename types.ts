@@ -4,7 +4,6 @@ export interface PoseSuggestion {
   description: string;
   tips: string[];
   angle: string;
-  props: { name: string; checked: boolean }[]; // 新增道具物件陣列
   imageUrl?: string;
   isImageLoading: boolean;
   imageError?: boolean;
@@ -18,6 +17,5 @@ export interface PoseResponse {
     description: string;
     tips: string[];
     angle: string;
-    props: string[]; // API 回傳的原始字串陣列
   }[];
 }

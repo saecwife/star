@@ -37,7 +37,7 @@ export const generatePoseIdeas = async (productName: string, context: string, mo
     2. 嚴格禁止切換場景：如果情境是「咖啡廳」，所有 9 個動作都必須在該咖啡廳內完成。絕不能出現「捷運」、「戶外」等其他無關地點。
     
     【語言要求】
-    **所有輸出的文字內容（包含 title, description, environmentDescription, props）都必須使用通順、優美的「繁體中文」撰寫。**
+    **所有輸出的文字內容（包含 title, description, environmentDescription）都必須使用通順、優美的「繁體中文」撰寫。**
 
     【姿勢多樣性要求】
     在上述「單一場景」限制下，請發揮創意提供 9 種變化：
@@ -47,13 +47,9 @@ export const generatePoseIdeas = async (productName: string, context: string, mo
     - 請考慮產品的物理大小，確保動作合理。
 
     請以 JSON 格式回傳，結構如下：
-    - environmentDescription: (String) 場景的統一視覺描述。
-    - modelDescription: (String) 模特兒的視覺描述。
+    - environmentDescription: (String) 場景的統一視覺描述 (請用繁體中文描述)。
+    - modelDescription: (String) 模特兒的視覺描述 (例如：亞裔年輕女性，穿著白色簡約襯衫)。
     - poses: (Array) 9 個姿勢物件。
-      - props: (Array of Strings) 針對該鏡頭，列出 5-8 項「具體拍攝準備清單」，務必詳細包含：
-         1. 模特兒身上的服裝細節 (Wardrobe/Outfit) - 例如: "米色針織露肩毛衣"
-         2. 配件飾品 (Accessories) - 例如: "極簡細金項鍊"
-         3. 場景道具 (Props) - 例如: "大理石紋托盤", "乾燥尤加利葉"
   `;
 
   try {
@@ -79,14 +75,9 @@ export const generatePoseIdeas = async (productName: string, context: string, mo
                     type: Type.ARRAY,
                     items: { type: Type.STRING }
                   },
-                  props: {
-                    type: Type.ARRAY,
-                    items: { type: Type.STRING },
-                    description: "List of 5-8 detailed items including wardrobe, accessories, and props"
-                  },
                   angle: { type: Type.STRING }
                 },
-                required: ["title", "description", "tips", "angle", "props"]
+                required: ["title", "description", "tips", "angle"]
               }
             }
           }

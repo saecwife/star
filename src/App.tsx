@@ -73,7 +73,7 @@ const App: React.FC = () => {
 
     } catch (err) {
       console.error(err);
-      setError("無法產生姿勢建議。請確認您的 API Key 設定是否正確。");
+      setError("無法產生姿勢建議。請確認您的 Cloudflare 環境變數 (API Key) 設定是否正確。");
       setIsGeneratingText(false);
     }
   };

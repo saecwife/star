@@ -1,7 +1,8 @@
 {
   "name": "star-pose-generator",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "description": "AI Pose Generator for Influencers",
   "type": "module",
   "scripts": {
     "dev": "vite",
